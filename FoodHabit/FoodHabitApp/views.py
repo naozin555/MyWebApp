@@ -25,8 +25,8 @@ def sign_up_func(request):
             return render(request, 'signup.html', {'error': 'このユーザーは既に登録されています。'})
         except:
             user = User.objects.create_user(new_username, '', new_password)
-            return render(request, 'signup.html', {'some': 100})
-    return render(request, 'signup.html', {'some': 100})
+            return render(request, 'signup.html')
+    return render(request, 'signup.html')
 
 
 def log_in_func(request):
@@ -39,31 +39,12 @@ def log_in_func(request):
             return redirect('list')
         else:
             return render(request, 'login.html', {'error': 'ログインする権限がありません。登録されいないユーザーである、もしくはユーザー名かパスワードが間違っています。'})
-    return render(request, 'login.html', {'some': 100})
+    return render(request, 'login.html')
 
 
 def log_out_func(request):
     logout(request)
     return redirect('login')
-
-
-# アップロードされたファイルのハンドル
-def _handle_uploaded_file(f):
-    csv_filepath = os.path.join(UPLOAD_DIR, f.name)
-    with open(csv_filepath, 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
-    # csvデータをDBに登録する
-    food_habit_df = pd.read_csv(csv_filepath)
-    food_habit_instances = [FoodHabitModel(
-        date=date,
-        weight=weight,
-        food_name=food_name,
-        food_category=food_category,
-    ) for date, weight, food_name, food_category in zip(food_habit_df['日付'], food_habit_df['体重'],
-                                                        food_habit_df['食品名'], food_habit_df['食品のカテゴリ'])]
-    FoodHabitModel.objects.bulk_create(food_habit_instances)
-    os.remove(csv_filepath)  # アップロードしたファイルを削除
 
 
 # 新規投稿（ファイルのアップロード）
@@ -100,21 +81,14 @@ def good_func(request, pk):
 
 def read_func(request, pk):
     post = Board.objects.get(pk=pk)
-    post2 = request.user.get_username()
-    if post2 in post.readtext:
+    reader = request.user.get_username()
+    if reader in post.previous_readers:
         return redirect('list')
     else:
         post.read += 1
-        post.readtext = post.readtext + '' + post2
+        post.readtext = post.previous_readers + '' + reader
         post.save()
         return redirect('list')
-
-
-class FoodHabitCreate(CreateView):
-    template_name = 'create.html'
-    model = Board
-    fields = ("author", "date")
-    success_url = reverse_lazy('list')
 
 
 class FoodHabitDelete(DeleteView):
@@ -125,3 +99,22 @@ class FoodHabitDelete(DeleteView):
 
 def hello_func(request):
     return HttpResponse("<h1>ようこそ</h1>")
+
+
+# アップロードされたファイルのハンドル
+def _handle_uploaded_file(f):
+    csv_filepath = os.path.join(UPLOAD_DIR, f.name)
+    with open(csv_filepath, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+    # csvデータをDBに登録する
+    food_habit_df = pd.read_csv(csv_filepath)
+    food_habit_instances = [FoodHabitModel(
+        date=date,
+        weight=weight,
+        food_name=food_name,
+        food_category=food_category,
+    ) for date, weight, food_name, food_category in zip(food_habit_df['日付'], food_habit_df['体重'],
+                                                        food_habit_df['食品名'], food_habit_df['食品のカテゴリ'])]
+    FoodHabitModel.objects.bulk_create(food_habit_instances)
+    os.remove(csv_filepath)  # アップロードしたファイルを削除
