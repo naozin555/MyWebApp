@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Food Habit Visualization</h1>
+    <p class="lead">あなたの直近の食事情報をアップロードしてみましょう。</p>
+  </div>
+</div>
+{% endblock header %}
+
+{% block content %}
+<div class="container">
+    {% if user.is_authenticated %}
+    <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+        <p>投稿者：{{ user.username }}</p>
+        {{form.as_p}}
+        <input type="submit" value="アップロードする">
+    </form>
+    {% else %}
+    <p>ログインしてください</p>
+    <a href="{% url 'logout' %}">ログインはこちら</a>
+    {% endif %}
+</div>
+{% endblock %}

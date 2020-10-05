@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Food Habit Charts</h1>
+    <p class="lead">あなたの体重推移と食事のバランスです。</p>
+  </div>
+</div>
+{% endblock header %}
+
+{% block content %}
+<div class="container">
+  <a href="{% url 'list' %}">投稿一覧へ</a>
+  <div class="alert alert-primary" role="alert">
+    {% if user.is_authenticated %}
+    <p>投稿者：{{ object.author }}</p>
+    <p>投稿日：{{ object.date }}</p>
+    <a href="" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">いいね:{{object.good}}</a>
+    <a href="" class="btn btn-secondary" tabindex="-1" role="button" aria-disabled="true">既読:{{object.read}}人</a>
+    <a href="{% url 'delete' object.pk %}" class="btn btn-success" tabindex="-1" role="button" aria-disabled="true">削除</a>
+    {% else %}
+    <p>投稿者：{{ object.author }}</p>
+    <p>投稿日：{{ object.date }}</p>
+    <a href="{% url 'good' object.pk %}" class="btn btn-primary" role="button" aria-pressed="true">いいね！</a>
+    <a href="{% url 'read' object.pk %}" class="btn btn-success" tabindex="-1" role="button" aria-disabled="true">既読にする</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock content %}
+
+
