@@ -16,8 +16,6 @@ class Board(models.Model):
 
 class FoodHabitModel(models.Model):
     """食習慣のモデル"""
-    class Meta:
-        db_table = 'food_habit_table'
     date = models.DateField(verbose_name='日付')
     weight = models.FloatField(verbose_name='体重')
     food_name = models.CharField(verbose_name='食品名', max_length=20)
