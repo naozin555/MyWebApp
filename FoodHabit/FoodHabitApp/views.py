@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.views.generic import ListView, DetailView, CreateView, DeleteView
+from django.views.generic import DeleteView
 from .models import FoodHabitModel, Board
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
@@ -114,13 +114,6 @@ def read_func(request, pk):
         post.readtext = post.readtext + '' + post2
         post.save()
         return redirect('list')
-
-
-class FoodHabitCreate(CreateView):
-    template_name = 'create.html'
-    model = Board
-    fields = ("author", "date")
-    success_url = reverse_lazy('list')
 
 
 class FoodHabitDelete(DeleteView):
