@@ -16,11 +16,10 @@ class Board(models.Model):
 
 class FoodHabitModel(models.Model):
     """食習慣のモデル"""
-    class Meta:
-        db_table = 'food_habit_table'
-    date = models.DateField(verbose_name='日付')
-    weight = models.FloatField(verbose_name='体重')
-    food_name = models.CharField(verbose_name='食品名', max_length=20)
+    date = models.DateField(default=timezone.now)
+    weight = models.FloatField(null=True, blank=True, default=0)
+    food_name = models.CharField(max_length=20)
     # 食品のカテゴリは、赤・黄・緑の3種類
     # 赤：血や肉を作る、黄：エネルギー源になる、緑：からだの調子を整える
-    food_category = models.CharField(verbose_name='食品のカテゴリ', max_length=15)
+    food_category = models.CharField(max_length=15)
+    post_id = models.IntegerField(null=True, blank=True, default=0)
