@@ -7,7 +7,7 @@ import datetime
 class Board(models.Model):
     """投稿記事のモデル"""
     author = models.CharField(max_length=20)
-    date = models.DateField(default=timezone.now)
+    date = models.DateTimeField(default=timezone.now)
     good = models.IntegerField(null=True, blank=True, default=0)
     bad = models.IntegerField(null=True, blank=True, default=0)
     read = models.IntegerField(null=True, blank=True, default=0)
