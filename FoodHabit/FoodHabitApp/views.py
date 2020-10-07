@@ -92,10 +92,11 @@ def read_func(request, pk):
         return redirect('list')
 
 
-class FoodHabitDelete(DeleteView):
-    template_name = 'delete.html'
-    model = Board
-    success_url = reverse_lazy('list')
+def delete_func(request, pk):
+    post = Board.objects.get(pk=pk)
+    post.delete()
+    FoodHabitModel.objects.filter(post_id=pk).delete()
+    return redirect('list')
 
 
 def hello_func(request):
