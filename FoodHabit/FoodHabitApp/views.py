@@ -24,21 +24,21 @@ def sign_up_func(request):
             return render(request, 'signup.html', {'error': 'このユーザーは既に登録されています。'})
         except:
             user = User.objects.create_user(new_username, '', new_password)
-            return render(request, 'login.html')
+            return redirect('login')
     return render(request, 'signup.html')
 
 
 # ログイン
 def log_in_func(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        enterd_username = request.POST['username']
+        enterd_password = request.POST['password']
+        user = authenticate(request, username=enterd_username, password=enterd_password)
         if user is not None:
             login(request, user)
             return redirect('list')
         else:
-            return render(request, 'login.html', {'error': 'ログインする権限がありません。登録されいないユーザーである、もしくはユーザー名かパスワードが間違っています。'})
+            return redirect('login', {'error': 'ログインできませんでした'})
     return render(request, 'login.html')
 
 
