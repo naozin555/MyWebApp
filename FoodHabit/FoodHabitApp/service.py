@@ -16,12 +16,14 @@ class Service:
         # アップロードしたファイルを削除
         os.remove(csv_filepath)
 
-    @staticmethod
-    def _register_data(csv_filepath, post_pk):
+    def _register_data(self, csv_filepath, post_pk):
         """csvのデータをDBに登録する"""
         food_habit_df = pd.read_csv(csv_filepath)
         # 欠損値のあるレコードを除去
         food_habit_df.dropna(how='any', inplace=True)
+        # 食品名から食品のカテゴリを割り当てる
+        food_habit_df['食品のカテゴリ'] = food_habit_df.apply(self._assign_food_category, axis=1)
+        # DB登録
         post_pk_list = [post_pk] * len(food_habit_df)
         food_habit_instances = [FoodHabitModel(
             date=date,
@@ -51,3 +53,16 @@ class Service:
             post.previous_readers = post.previous_readers + '' + reader
             post.save()
             return redirect('list')
+
+    @staticmethod
+    def _assign_food_category(row):
+        """食品名に応じて、カテゴリを割り当てる"""
+        if "焼肉" in row["食品名"] or "ハンバーグ" in row["食品名"] or "焼き魚" in row["食品名"]:
+            return "赤"
+        elif "ピーマン炒め" in row["食品名"] or "ほうれん草のおひたし" in row["食品名"] or "切り干し大根" in row["食品名"]:
+            return "緑"
+        elif "うどん" in row["食品名"] or "チャーハン" in row["食品名"] \
+                or "フライドポテト" in row["食品名"] or "カップヌードル" in row["食品名"]:
+            return "黄"
+        else:
+            print(f"想定外の食品名です：{row['食品名']}")
