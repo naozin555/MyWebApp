@@ -50,10 +50,11 @@ def log_out_func(request):
 # 新規投稿（ファイルのアップロード）
 def create_post_func(request):
     if request.method == 'POST':
-        Board.objects.create(author=request.user.get_username())
+        post = Board.objects.create(author=request.user.get_username())
+        post.save()
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            _handle_uploaded_file(request.FILES['file'])
+            _handle_uploaded_file(request.FILES['file'], post.pk)
             return redirect('list')
     else:
         form = UploadFileForm()
@@ -102,19 +103,22 @@ def hello_func(request):
 
 
 # アップロードされたファイルのハンドル
-def _handle_uploaded_file(f):
+def _handle_uploaded_file(f, post_pk):
     csv_filepath = os.path.join(UPLOAD_DIR, f.name)
     with open(csv_filepath, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
     # csvデータをDBに登録する
     food_habit_df = pd.read_csv(csv_filepath)
+    post_pk_list = [post_pk] * len(food_habit_df)
     food_habit_instances = [FoodHabitModel(
         date=date,
         weight=weight,
         food_name=food_name,
         food_category=food_category,
-    ) for date, weight, food_name, food_category in zip(food_habit_df['日付'], food_habit_df['体重'],
-                                                        food_habit_df['食品名'], food_habit_df['食品のカテゴリ'])]
+        post_id=post_id
+    ) for date, weight, food_name, food_category, post_id
+        in zip(food_habit_df['日付'], food_habit_df['体重'],
+               food_habit_df['食品名'], food_habit_df['食品のカテゴリ'], post_pk_list)]
     FoodHabitModel.objects.bulk_create(food_habit_instances)
     os.remove(csv_filepath)  # アップロードしたファイルを削除
