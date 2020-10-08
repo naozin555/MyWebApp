@@ -6,8 +6,8 @@ from .models import Board, FoodHabitModel
 
 class Service:
 
-    # アップロードされたファイルのハンドル
     def handle_uploaded_file(self, uploaded_file, upload_dir, post_pk):
+        """アップロードされたファイルのハンドル"""
         csv_filepath = os.path.join(upload_dir, uploaded_file.name)
         with open(csv_filepath, 'wb+') as destination:
             for chunk in uploaded_file.chunks():
@@ -38,12 +38,14 @@ class Service:
 
     @staticmethod
     def press_good(pk):
+        """いいねボタンが押された数を計算する"""
         post = Board.objects.get(pk=pk)
         post.good += 1
         post.save()
 
     @staticmethod
     def press_read(request, pk):
+        """既読ボタンが押された数を計算する"""
         post = Board.objects.get(pk=pk)
         reader = request.user.get_username()
         if reader in post.previous_readers:
