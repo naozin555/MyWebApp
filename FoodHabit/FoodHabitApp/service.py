@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib
 from django.shortcuts import redirect
 import pandas as pd
 from .models import Board, FoodHabitModel
@@ -7,32 +8,6 @@ import os
 
 
 class Service:
-
-    @staticmethod
-    def graph_plot(post_pk):
-        """グラフの描画"""
-        food_habit_data = FoodHabitModel.objects.filter(post_id=post_pk)
-        # 日付け
-        x = [data.date for data in food_habit_data]
-        y = [data.weight for data in food_habit_data]
-        plt.ylim(50, 70)
-        plt.ylabel("Weight[kg]")
-        plt.xlabel("Date")
-        plt.xticks(rotation=45)
-        plt.plot(x, y)
-
-    @staticmethod
-    def plt_to_svg():
-        """svgへの変換"""
-        # ファイルに書き出さずに仮想的にメモリ上に保存するようにする
-        buf = io.BytesIO()
-        # 保存する
-        plt.savefig(buf, format='svg', bbox_inches='tight')
-        # 保存したグラフデータを読み込む
-        graph = buf.getvalue()
-        # メモリを開放する
-        buf.close()
-        return graph
 
     def handle_uploaded_file(self, uploaded_file, upload_dir, post_pk):
         """アップロードされたファイルのハンドル"""
@@ -65,6 +40,35 @@ class Service:
             in zip(food_habit_df['日付'], food_habit_df['体重'],
                    food_habit_df['食品名'], food_habit_df['食品のカテゴリ'], post_pk_list)]
         FoodHabitModel.objects.bulk_create(food_habit_instances)
+
+    # バックエンドでの使用を指定
+    matplotlib.use('Agg')
+
+    @staticmethod
+    def graph_plot(post_pk):
+        """グラフの描画"""
+        food_habit_data = FoodHabitModel.objects.filter(post_id=post_pk)
+        # 日付け
+        x = [data.date for data in food_habit_data]
+        y = [data.weight for data in food_habit_data]
+        plt.ylim(50, 70)
+        plt.ylabel("Weight[kg]")
+        plt.xlabel("Date")
+        plt.xticks(rotation=45)
+        plt.plot(x, y)
+
+    @staticmethod
+    def plt_to_svg():
+        """svgへの変換"""
+        # ファイルに書き出さずに仮想的にメモリ上に保存するようにする
+        buf = io.BytesIO()
+        # 保存する
+        plt.savefig(buf, format='svg', bbox_inches='tight')
+        # 保存したグラフデータを読み込む
+        graph = buf.getvalue()
+        # メモリを開放する
+        buf.close()
+        return graph
 
     @staticmethod
     def press_good(pk):

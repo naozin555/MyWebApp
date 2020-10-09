@@ -7,6 +7,7 @@ from .forms import UploadFileForm
 from django.contrib.auth.decorators import login_required
 from .service import Service
 import matplotlib.pyplot as plt
+import matplotlib
 import os
 
 
@@ -74,16 +75,17 @@ def list_func(request):
 
 # 記事の詳細
 def detail_func(request, pk):
+    # バックエンドでの使用を指定
+    matplotlib.use('Agg')
     # グラフの作成
     service.graph_plot(pk)
-    # svgへ保存
-    svg = service.plt_to_svg()  # convert plot to SVG
+    # svgで保存
+    # svg = service.plt_to_svg()  # convert plot to SVG
+    plt.savefig(f"FoodHabitApp/static/images/graph_{pk}.svg")
     # グラフのクリーンアップ
     plt.cla()
-    response = HttpResponse(svg, content_type='image/svg+xml')
-    return response
-    # post_detail = Board.objects.get(pk=pk)
-    # return render(request, 'detail.html', {'post_detail': post_detail})
+    post_detail = Board.objects.get(pk=pk)
+    return render(request, 'detail.html', {'post_detail': post_detail})
 
 
 # いいね
