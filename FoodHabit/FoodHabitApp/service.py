@@ -1,10 +1,7 @@
 import matplotlib.pyplot as plt
-from matplotlib.dates import drange
 from django.shortcuts import redirect
 import pandas as pd
-import numpy as np
 from .models import Board, FoodHabitModel
-import datetime
 import io
 import os
 
@@ -18,13 +15,10 @@ class Service:
         # 日付け
         x = [data.date for data in food_habit_data]
         y = [data.weight for data in food_habit_data]
-        # start_date = x[0]
-        # end_date = x[-1]
-        # delta = datetime.timedelta(days=1)
-        # x = drange(start_date, end_date, delta)
         plt.ylim(50, 70)
         plt.ylabel("Weight[kg]")
         plt.xlabel("Date")
+        plt.xticks(rotation=45)
         plt.plot(x, y)
 
     @staticmethod
