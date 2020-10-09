@@ -51,6 +51,7 @@ class Service:
         # 日付け
         x = [data.date for data in food_habit_data]
         y = [data.weight for data in food_habit_data]
+        plt.figure(facecolor='skyblue', tight_layout=True)
         plt.ylim(50, 70)
         plt.ylabel("Weight[kg]")
         plt.xlabel("Date")

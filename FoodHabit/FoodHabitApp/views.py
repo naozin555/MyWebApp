@@ -80,7 +80,6 @@ def detail_func(request, pk):
     # グラフの作成
     service.graph_plot(pk)
     # svgで保存
-    # svg = service.plt_to_svg()  # convert plot to SVG
     plt.savefig(f"FoodHabitApp/static/images/graph_{pk}.svg")
     # グラフのクリーンアップ
     plt.cla()
