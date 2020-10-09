@@ -1,9 +1,12 @@
 import matplotlib.pyplot as plt
+from matplotlib.dates import drange
 from django.shortcuts import redirect
-import os
 import pandas as pd
+import numpy as np
 from .models import Board, FoodHabitModel
+import datetime
 import io
+import os
 
 
 class Service:
@@ -15,16 +18,27 @@ class Service:
         # 日付け
         x = [data.date for data in food_habit_data]
         y = [data.weight for data in food_habit_data]
+        # start_date = x[0]
+        # end_date = x[-1]
+        # delta = datetime.timedelta(days=1)
+        # x = drange(start_date, end_date, delta)
+        plt.ylim(50, 70)
+        plt.ylabel("Weight[kg]")
+        plt.xlabel("Date")
         plt.plot(x, y)
 
     @staticmethod
     def plt_to_svg():
         """svgへの変換"""
+        # ファイルに書き出さずに仮想的にメモリ上に保存するようにする
         buf = io.BytesIO()
+        # 保存する
         plt.savefig(buf, format='svg', bbox_inches='tight')
-        s = buf.getvalue()
+        # 保存したグラフデータを読み込む
+        graph = buf.getvalue()
+        # メモリを開放する
         buf.close()
-        return s
+        return graph
 
     def handle_uploaded_file(self, uploaded_file, upload_dir, post_pk):
         """アップロードされたファイルのハンドル"""
@@ -39,8 +53,10 @@ class Service:
     def _register_data(self, csv_filepath, post_pk):
         """csvのデータをDBに登録する"""
         food_habit_df = pd.read_csv(csv_filepath)
-        # 欠損値のあるレコードを除去
-        food_habit_df.dropna(how='any', inplace=True)
+        # 食事の欠損値を最頻値で補完
+        food_habit_df["食品名"].fillna(food_habit_df["食品名"].mode()[0], inplace=True)
+        # 体重の欠損値を平均値で補完
+        food_habit_df["体重"].fillna(food_habit_df["体重"].mean(), inplace=True)
         # 食品名から食品のカテゴリを割り当てる
         food_habit_df['食品のカテゴリ'] = food_habit_df.apply(self._assign_food_category, axis=1)
         # DB登録

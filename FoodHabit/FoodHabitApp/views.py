@@ -4,10 +4,11 @@ from .models import FoodHabitModel, Board
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from .forms import UploadFileForm
-import matplotlib.pyplot as plt
-import os
 from django.contrib.auth.decorators import login_required
 from .service import Service
+import matplotlib.pyplot as plt
+import os
+
 
 # アップロードしたファイルを保存するディレクトリ
 UPLOAD_DIR = os.path.dirname(os.path.abspath(__file__)) + "/static/uploaded/"
@@ -73,9 +74,12 @@ def list_func(request):
 
 # 記事の詳細
 def detail_func(request, pk):
-    service.graph_plot(pk)  # create the plot
+    # グラフの作成
+    service.graph_plot(pk)
+    # svgへ保存
     svg = service.plt_to_svg()  # convert plot to SVG
-    plt.cla()  # clean up plt so it can be re-used
+    # グラフのクリーンアップ
+    plt.cla()
     response = HttpResponse(svg, content_type='image/svg+xml')
     return response
     # post_detail = Board.objects.get(pk=pk)
