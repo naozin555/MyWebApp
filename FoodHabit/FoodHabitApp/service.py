@@ -1,10 +1,30 @@
+import matplotlib.pyplot as plt
 from django.shortcuts import redirect
 import os
 import pandas as pd
 from .models import Board, FoodHabitModel
+import io
 
 
 class Service:
+
+    @staticmethod
+    def graph_plot(post_pk):
+        """グラフの描画"""
+        food_habit_data = FoodHabitModel.objects.filter(post_id=post_pk)
+        # 日付け
+        x = [data.date for data in food_habit_data]
+        y = [data.weight for data in food_habit_data]
+        plt.plot(x, y)
+
+    @staticmethod
+    def plt_to_svg():
+        """svgへの変換"""
+        buf = io.BytesIO()
+        plt.savefig(buf, format='svg', bbox_inches='tight')
+        s = buf.getvalue()
+        buf.close()
+        return s
 
     def handle_uploaded_file(self, uploaded_file, upload_dir, post_pk):
         """アップロードされたファイルのハンドル"""
