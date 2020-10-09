@@ -80,11 +80,11 @@ def detail_func(request, pk):
     # グラフの作成
     service.graph_plot(pk)
     # svgで保存
-    plt.savefig(f"FoodHabitApp/static/images/graph_{pk}.svg")
+    svg = service.plt_to_svg()
     # グラフのクリーンアップ
     plt.cla()
     post_detail = Board.objects.get(pk=pk)
-    return render(request, 'detail.html', {'post_detail': post_detail})
+    return render(request, 'detail.html', {'post_detail': post_detail, 'svg': svg})
 
 
 # いいね
