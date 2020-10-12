@@ -45,7 +45,7 @@ class Service:
     matplotlib.use('Agg')
 
     @staticmethod
-    def graph_plot(post_pk):
+    def visualize_food_habit(post_pk):
         """グラフの描画"""
         # グラフを表示する領域の確保
         fig = plt.figure(facecolor='lightcyan', tight_layout=True)
@@ -76,6 +76,19 @@ class Service:
         colorlist = ["gold", "orangered", "lawngreen"]
         food_category_graph.pie(food_category_num_list, labels=food_category_label, autopct="%1.1f%%", colors=colorlist,
                                 wedgeprops={'linewidth': 1, 'edgecolor': "black"})
+
+        # 食事のバランスに対するアドバイス
+        food_category_map = {'黄': num_yellow, '赤': num_red, '緑': num_green}
+        min_category = min(food_category_map, key=food_category_map.get)
+        min_category_num = min(food_category_map.values())
+        max_category_num = max(food_category_map.values())
+        if max_category_num > 1.5 * min_category_num:
+            msg = f"バランスが偏っています。{min_category}色の食品をより多く摂取しましょう。"
+        else:
+            msg = "この調子で、バランスの良い食事を心がけましょう。"
+
+        return msg
+
 
     @staticmethod
     def plt_to_svg():
