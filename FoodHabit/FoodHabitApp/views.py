@@ -107,10 +107,7 @@ def delete_func(request, pk):
     post.delete()
     # 削除する記事に紐づく食習慣データの削除
     FoodHabitModel.objects.filter(post_id=pk).delete()
+    # 削除する記事に紐づくグラフデータの削除
     os.remove(f"FoodHabitApp/static/images/graph_{pk}.svg")
     return redirect('list')
 
-
-# 何もない時の画面
-def hello_func(request):
-    return HttpResponse("<h1>ようこそ</h1>")
