@@ -48,7 +48,7 @@ class Service:
     def graph_plot(post_pk):
         """グラフの描画"""
         # グラフを表示する領域の確保
-        fig = plt.figure(facecolor='skyblue', tight_layout=True)
+        fig = plt.figure(facecolor='lightcyan', tight_layout=True)
 
         # グラフ位置の指定
         weight_graph = fig.add_subplot(1, 2, 1)
@@ -58,6 +58,7 @@ class Service:
         food_habit_data = FoodHabitModel.objects.filter(post_id=post_pk)
         date_list = [data.date for data in food_habit_data]
         weight_list = [data.weight for data in food_habit_data]
+        food_category_list = [data.food_category for data in food_habit_data]
 
         # 体重推移の描画
         weight_graph.plot(date_list, weight_list)
@@ -66,12 +67,15 @@ class Service:
         weight_graph.set_ylim(50, 70)
         weight_graph.tick_params(axis='x', rotation=45)
 
-        # 体重推移の描画2
-        food_category_graph.plot(date_list, weight_list)
-        food_category_graph.set_ylabel("Weight[kg]")
-        food_category_graph.set_xlabel("Date")
-        food_category_graph.set_ylim(50, 70)
-        food_category_graph.tick_params(axis='x', rotation=45)
+        # 食事のカテゴリの割合の描画
+        num_yellow = food_category_list.count('黄')
+        num_red = food_category_list.count('赤')
+        num_green = food_category_list.count('緑')
+        food_category_num_list = [num_yellow, num_red, num_green]
+        food_category_label = ["yellow", "red", "green"]
+        colorlist = ["gold", "orangered", "lawngreen"]
+        food_category_graph.pie(food_category_num_list, labels=food_category_label, autopct="%1.1f%%", colors=colorlist,
+                                wedgeprops={'linewidth': 1, 'edgecolor': "black"})
 
     @staticmethod
     def plt_to_svg():
