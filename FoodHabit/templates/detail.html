@@ -16,7 +16,7 @@
     {% if user.get_username == post_detail.author %}
     <p>投稿者：{{ post_detail.author }}</p>
     <p>投稿日：{{ post_detail.date }}</p>
-    <p>食習慣へのアドバイス：{{ msg }}</p>
+    <p><font color="red">食習慣へのアドバイス：{{ advice_msg }}</font></p>
 <!--    <p><img src="/static/images/graph_{{ svg }}" width="500" height="500" content_type='image/svg+xml'></p>-->
     <p align="center"><img src="/static/images/graph_{{ post_detail.pk }}.svg" width="1000" height="800"></p>
     <button type="btn" class="btn btn-primary" tabindex="-1" role="badge" disabled>いいね:{{post_detail.good}}</button>
@@ -25,8 +25,8 @@
     {% else %}
     <p>投稿者：{{ post_detail.author }}</p>
     <p>投稿日：{{ post_detail.date }}</p>
-    <p>食習慣へのアドバイス：{{ msg }}</p>
-    <p> align="center"<img src="/static/images/graph_{{ post_detail.pk }}.svg" width="500" height="500"></p>
+    <p><font color="red">食習慣へのアドバイス：{{ advice_msg }}</font></p>
+    <p align="center"><img src="/static/images/graph_{{ post_detail.pk }}.svg" width="500" height="500"></p>
     <a href="{% url 'good' post_detail.pk %}" class="btn btn-primary" role="button" aria-pressed="true">いいね！</a>
     <a href="{% url 'read' post_detail.pk %}" class="btn btn-success" tabindex="-1" role="button" aria-disabled="true">既読にする</a>
     {% endif %}

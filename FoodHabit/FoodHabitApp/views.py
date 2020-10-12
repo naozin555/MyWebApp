@@ -78,7 +78,7 @@ def detail_func(request, pk):
     # バックエンドでの使用を指定
     matplotlib.use('Agg')
     # 食習慣の可視化（戻り値はアドバイス）
-    msg = service.visualize_food_habit(pk)
+    advice_msg = service.visualize_food_habit(pk)
     # svgで保存
     plt.savefig(f"FoodHabitApp/static/images/graph_{pk}.svg")
     # svg = service.plt_to_svg()
@@ -86,7 +86,7 @@ def detail_func(request, pk):
     plt.cla()
     post_detail = Board.objects.get(pk=pk)
     # return render(request, 'detail.html', {'post_detail': post_detail, 'svg': svg})
-    return render(request, 'detail.html', {'post_detail': post_detail, 'msg': msg})
+    return render(request, 'detail.html', {'post_detail': post_detail, 'advice_msg': advice_msg})
 
 
 # いいね

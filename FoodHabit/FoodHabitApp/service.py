@@ -44,8 +44,7 @@ class Service:
     # バックエンドでの使用を指定
     matplotlib.use('Agg')
 
-    @staticmethod
-    def visualize_food_habit(post_pk):
+    def visualize_food_habit(self, post_pk):
         """グラフの描画"""
         # グラフを表示する領域の確保
         fig = plt.figure(facecolor='lightcyan', tight_layout=True)
@@ -66,29 +65,25 @@ class Service:
         weight_graph.set_xlabel("Date")
         weight_graph.set_ylim(50, 70)
         weight_graph.tick_params(axis='x', rotation=45)
+        weight_graph.set_title("Weight fluctuation")
 
         # 食事のカテゴリの割合の描画
         num_yellow = food_category_list.count('黄')
         num_red = food_category_list.count('赤')
         num_green = food_category_list.count('緑')
         food_category_num_list = [num_yellow, num_red, num_green]
-        food_category_label = ["yellow", "red", "green"]
+        food_category_label = ["yellow: become your energy",
+                               "red: become your blood and flesh",
+                               "green: maintain bodily functions"]
         colorlist = ["gold", "orangered", "lawngreen"]
-        food_category_graph.pie(food_category_num_list, labels=food_category_label, autopct="%1.1f%%", colors=colorlist,
-                                wedgeprops={'linewidth': 1, 'edgecolor': "black"})
+        food_category_graph.pie(food_category_num_list, autopct="%1.1f%%", colors=colorlist,
+                                wedgeprops={'linewidth': 1, 'edgecolor': "black"}, radius=1.5)
+        food_category_graph.legend(food_category_label, fancybox=True, loc='upper center', bbox_to_anchor=(.5, -.2),
+                                   borderaxespad=0, fontsize=10)
+        food_category_graph.set_title("Food category balance", y=1.24)
 
-        # 食事のバランスに対するアドバイス
-        food_category_map = {'黄': num_yellow, '赤': num_red, '緑': num_green}
-        min_category = min(food_category_map, key=food_category_map.get)
-        min_category_num = min(food_category_map.values())
-        max_category_num = max(food_category_map.values())
-        if max_category_num > 1.5 * min_category_num:
-            msg = f"バランスが偏っています。{min_category}色の食品をより多く摂取しましょう。"
-        else:
-            msg = "この調子で、バランスの良い食事を心がけましょう。"
-
-        return msg
-
+        # 食事のバランスに対するアドバイスを返す
+        return self._make_advice_msg(num_yellow, num_red, num_green)
 
     @staticmethod
     def plt_to_svg():
@@ -135,3 +130,16 @@ class Service:
             return "黄"
         else:
             print(f"想定外の食品名です：{row['食品名']}")
+
+    @staticmethod
+    def _make_advice_msg(num_yellow, num_red, num_green):
+        """食品名に応じて、カテゴリを割り当てる"""
+        food_category_map = {'黄': num_yellow, '赤': num_red, '緑': num_green}
+        min_category = min(food_category_map, key=food_category_map.get)
+        min_category_num = min(food_category_map.values())
+        max_category_num = max(food_category_map.values())
+        if max_category_num > 1.5 * min_category_num:
+            advice_msg = f"食事のバランスが偏っています。{min_category}色の食品をより多く摂取しましょう。"
+        else:
+            advice_msg = "この調子で、バランスの良い食事を心がけましょう。"
+        return advice_msg
