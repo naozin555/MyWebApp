@@ -47,16 +47,31 @@ class Service:
     @staticmethod
     def graph_plot(post_pk):
         """グラフの描画"""
+        # グラフを表示する領域の確保
+        fig = plt.figure(facecolor='skyblue', tight_layout=True)
+
+        # グラフ位置の指定
+        weight_graph = fig.add_subplot(1, 2, 1)
+        food_category_graph = fig.add_subplot(1, 2, 2)
+
+        # DBからデータの取得
         food_habit_data = FoodHabitModel.objects.filter(post_id=post_pk)
-        # 日付け
-        x = [data.date for data in food_habit_data]
-        y = [data.weight for data in food_habit_data]
-        plt.figure(facecolor='skyblue', tight_layout=True)
-        plt.ylim(50, 70)
-        plt.ylabel("Weight[kg]")
-        plt.xlabel("Date")
-        plt.xticks(rotation=45)
-        plt.plot(x, y)
+        date_list = [data.date for data in food_habit_data]
+        weight_list = [data.weight for data in food_habit_data]
+
+        # 体重推移の描画
+        weight_graph.plot(date_list, weight_list)
+        weight_graph.set_ylabel("Weight[kg]")
+        weight_graph.set_xlabel("Date")
+        weight_graph.set_ylim(50, 70)
+        weight_graph.tick_params(axis='x', rotation=45)
+
+        # 体重推移の描画2
+        food_category_graph.plot(date_list, weight_list)
+        food_category_graph.set_ylabel("Weight[kg]")
+        food_category_graph.set_xlabel("Date")
+        food_category_graph.set_ylim(50, 70)
+        food_category_graph.tick_params(axis='x', rotation=45)
 
     @staticmethod
     def plt_to_svg():

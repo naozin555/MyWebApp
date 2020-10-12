@@ -17,7 +17,7 @@
     <p>投稿者：{{ post_detail.author }}</p>
     <p>投稿日：{{ post_detail.date }}</p>
 <!--    <p><img src="/static/images/graph_{{ svg }}" width="500" height="500" content_type='image/svg+xml'></p>-->
-    <p><img src="/static/images/graph_{{ post_detail.pk }}.svg" width="500" height="500"></p>
+    <p><img src="/static/images/graph_{{ post_detail.pk }}.svg" width="1000" height="800"></p>
     <button type="btn" class="btn btn-primary" tabindex="-1" role="badge" disabled>いいね:{{post_detail.good}}</button>
     <button type="btn" class="btn btn-success" tabindex="-1" role="badge" disabled>既読:{{post_detail.read}}人</button>
     <a href="{% url 'delete' post_detail.pk %}" class="btn btn-danger" tabindex="-1" role="button" aria-disabled="true">削除</a>
