@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import sign_up_func, log_in_func, detail_func, create_post_func, delete_func,\
-    list_func, log_out_func, good_func, read_func
+    list_func, log_out_func, good_func, read_func, plot_func
 
 urlpatterns = [
     path('signup/', sign_up_func, name="signup"),
@@ -12,4 +12,5 @@ urlpatterns = [
     path('logout', log_out_func, name="logout"),
     path('good/<int:pk>', good_func, name='good'),
     path('read/<int:pk>', read_func, name='read'),
+    path('plot/<int:pk>', plot_func, name="img_plot"),
 ]

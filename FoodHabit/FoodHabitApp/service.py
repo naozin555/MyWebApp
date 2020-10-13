@@ -2,9 +2,11 @@ import matplotlib.pyplot as plt
 import matplotlib
 from django.shortcuts import redirect
 import pandas as pd
+import numpy as np
 from .models import Board, FoodHabitModel
 import io
 import os
+import cv2
 
 
 class Service:
@@ -90,12 +92,17 @@ class Service:
         """svgへの変換"""
         # ファイルに書き出さずに仮想的にメモリ上に保存するようにする
         buf = io.BytesIO()
-        # 保存する
+        # bufferに保持
         plt.savefig(buf, format='svg', bbox_inches='tight')
-        # 保存したグラフデータを読み込む
+        # plt.savefig(buf, format='png')
+        # 保持したグラフデータを読み込む
         graph = buf.getvalue()
+        # enc = np.frombuffer(buf.getvalue(), dtype=np.uint8)  # bufferからの読み出し
+        # dst = cv2.imdecode(enc, 1)  # デコード
+        # dst = dst[:, :, ::-1]  # BGR->RGB
         # メモリを開放する
         buf.close()
+        # return dst
         return graph
 
     @staticmethod
