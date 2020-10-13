@@ -1,10 +1,8 @@
 import io
 import os
 
-import cv2
 import matplotlib
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 from django.shortcuts import redirect
 
