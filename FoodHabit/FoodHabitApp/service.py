@@ -17,11 +17,11 @@ class Service:
     def make_advice_msg(post_pk):
         """食品名に応じて、カテゴリを割り当てる"""
         food_habit_data = FoodHabitModel.objects.filter(post_id=post_pk)
-        food_category_list = [data.food_category for data in food_habit_data]
-        num_yellow = food_category_list.count('黄')
-        num_red = food_category_list.count('赤')
-        num_green = food_category_list.count('緑')
-        food_category_map = {'黄': num_yellow, '赤': num_red, '緑': num_green}
+        food_category_map = {
+            '黄': food_habit_data.filter(food_category='黄').count(),
+            '赤': food_habit_data.filter(food_category='赤').count(),
+            '緑': food_habit_data.filter(food_category='緑').count()
+        }
         min_category = min(food_category_map, key=food_category_map.get)
         min_category_num = min(food_category_map.values())
         max_category_num = max(food_category_map.values())
@@ -59,10 +59,11 @@ class Service:
         weight_graph.set_title("Weight fluctuation")
 
         # 食事のカテゴリの割合の描画
-        num_yellow = food_category_list.count('黄')
-        num_red = food_category_list.count('赤')
-        num_green = food_category_list.count('緑')
-        food_category_num_list = [num_yellow, num_red, num_green]
+        food_category_num_list = [
+            food_category_list.count('黄'),
+            food_category_list.count('赤'),
+            food_category_list.count('緑')
+        ]
         food_category_label = ["yellow: become your energy",
                                "red: become your blood and flesh",
                                "green: maintain bodily functions"]
