@@ -78,12 +78,8 @@ def list_func(request):
 def detail_func(request, pk):
     # バックエンドでの使用を指定(これを記載しないと「pythonが予期しない理由で終了しました。」というエラーが発生する)
     matplotlib.use('Agg')
-    # 食習慣の可視化（戻り値はアドバイス）
-    advice_msg = service.visualize_food_habit(pk)
-    # svgで保存
-    plt.savefig(f"FoodHabitApp/static/images/graph_{pk}.svg")
-    # グラフのクリーンアップ
-    plt.cla()
+    # 食習慣に対するアドバイス生成
+    advice_msg = service.make_advice_msg(pk)
     post_detail = Board.objects.get(pk=pk)
     return render(request, 'detail.html', {'post_detail': post_detail, 'advice_msg': advice_msg})
 
@@ -93,13 +89,12 @@ def plot_func(request, pk):
     # バックエンドでの使用を指定(これを記載しないと「pythonが予期しない理由で終了しました。」というエラーが発生する)
     matplotlib.use('Agg')
     # 食習慣の可視化（戻り値はアドバイス）
-    advice_msg = service.visualize_food_habit(pk)
+    service.visualize_food_habit(pk)
     # svgで保存
-    # plt.savefig(f"FoodHabitApp/static/images/graph_{pk}.svg")
     svg = service.plt_to_svg()
     # グラフのクリーンアップ
     plt.cla()
-    response = HttpResponse(svg, content_type='image/png')
+    response = HttpResponse(svg, content_type='image/svg+xml')
     return response
 
 
