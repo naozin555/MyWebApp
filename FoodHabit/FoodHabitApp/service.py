@@ -41,7 +41,7 @@ class Service:
                    food_habit_df['食品名'], food_habit_df['食品のカテゴリ'], post_pk_list)]
         FoodHabitModel.objects.bulk_create(food_habit_instances)
 
-    # バックエンドでの使用を指定
+    # バックエンドでの使用を指定(これを記載しないと「pythonが予期しない理由で終了しました。」というエラーが発生する)
     matplotlib.use('Agg')
 
     def visualize_food_habit(self, post_pk):

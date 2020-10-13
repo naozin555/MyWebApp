@@ -75,7 +75,7 @@ def list_func(request):
 
 # 記事の詳細
 def detail_func(request, pk):
-    # バックエンドでの使用を指定
+    # バックエンドでの使用を指定(これを記載しないと「pythonが予期しない理由で終了しました。」というエラーが発生する)
     matplotlib.use('Agg')
     # 食習慣の可視化（戻り値はアドバイス）
     advice_msg = service.visualize_food_habit(pk)
