@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import FoodHabitModel, Board
+
+from .models import Board, FoodHabitModel
 
 # Register your models here.
 

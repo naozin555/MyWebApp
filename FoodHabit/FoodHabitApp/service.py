@@ -1,12 +1,14 @@
-import matplotlib.pyplot as plt
-import matplotlib
-from django.shortcuts import redirect
-import pandas as pd
-import numpy as np
-from .models import Board, FoodHabitModel
 import io
 import os
+
 import cv2
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from django.shortcuts import redirect
+
+from .models import Board, FoodHabitModel
 
 
 class Service:

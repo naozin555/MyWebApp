@@ -1,15 +1,16 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import FoodHabitModel, Board
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
-from .forms import UploadFileForm
-from django.contrib.auth.decorators import login_required
-from .service import Service
-import matplotlib.pyplot as plt
-import matplotlib
 import os
 
+import matplotlib
+import matplotlib.pyplot as plt
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+
+from .forms import UploadFileForm
+from .models import Board, FoodHabitModel
+from .service import Service
 
 # アップロードしたファイルを保存するディレクトリ
 UPLOAD_DIR = os.path.dirname(os.path.abspath(__file__)) + "/static/uploaded/"
