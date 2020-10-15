@@ -1,1 +1,1 @@
-web: gunicorn --env DJANGO_SETTINGS_MODULE=FoodHabit.FoodHabitProject.wsgi --log-file -
+web: gunicorn FoodHabit.FoodHabitProject.wsgi --log-file -
