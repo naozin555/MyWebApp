@@ -140,32 +140,12 @@ try:
 except ImportError:
     pass
 
-# if not DEBUG:
-#     SECRET_KEY = os.environ['SECRET_KEY']
-#     import django_heroku
-#     django_heroku.settings(locals())
+if not DEBUG:
+    SECRET_KEY = os.environ['SECRET_KEY']
+    import django_heroku
+    django_heroku.settings(locals())
 
 db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
 DATABASES['default'].update(db_from_env)
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# 本番環境でログを出力する
-hostname = gethostname()
-if "COMPUTER-NAME" not in hostname:
-    DEBUG = False
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'handlers': {
-            'console': {
-                'class': 'logging.StreamHandler',
-            },
-        },
-        'loggers': {
-            'django': {
-                'handlers': ['console'],
-                'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
-            },
-        },
-    }
