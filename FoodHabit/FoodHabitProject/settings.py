@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ROOT_URLCONF = 'FoodHabitProject.urls'
+ROOT_URLCONF = 'FoodHabit.FoodHabitProject.urls'
 
 TEMPLATES = [
     {
@@ -70,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'FoodHabitProject.wsgi.application'
+WSGI_APPLICATION = 'FoodHabit.FoodHabitProject.wsgi.application'
 
 
 # Database
