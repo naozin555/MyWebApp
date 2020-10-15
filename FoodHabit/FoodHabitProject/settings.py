@@ -72,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'FoodHabitProject.wsgi.application'
+WSGI_APPLICATION = 'FoodHabit.FoodHabitProject.wsgi.application'
 
 
 # Database
