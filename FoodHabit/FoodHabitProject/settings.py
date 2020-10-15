@@ -9,11 +9,11 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
+# 一旦、ローカル環境と本番環境の切り分けができている状態
 
 import os
 
 import dj_database_url
-from socket import gethostname
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'FoodHabit.FoodHabitApp',
+    'FoodHabitApp',
 ]
 
 MIDDLEWARE = [
@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ROOT_URLCONF = 'FoodHabit.FoodHabitProject.urls'
+ROOT_URLCONF = 'FoodHabitProject.urls'
 
 TEMPLATES = [
     {
@@ -71,7 +71,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'FoodHabit.FoodHabitProject.wsgi.application'
+WSGI_APPLICATION = 'FoodHabitProject.wsgi.application'
 
 
 # Database
