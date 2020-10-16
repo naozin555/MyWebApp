@@ -1,5 +1,3 @@
-import os
-
 import matplotlib
 import matplotlib.pyplot as plt
 from django.contrib.auth import authenticate, login, logout
@@ -11,9 +9,6 @@ from django.shortcuts import redirect, render
 from .forms import UploadFileForm
 from .models import Board, FoodHabitModel
 from .service import Service
-
-# アップロードしたファイルを保存するディレクトリ
-UPLOAD_DIR = os.path.dirname(os.path.abspath(__file__)) + "/static/uploaded/"
 
 service = Service()
 
@@ -59,7 +54,7 @@ def create_post_func(request):
         post.save()
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            service.handle_uploaded_file(request.FILES['file'], UPLOAD_DIR, post.pk)
+            service.register_uploaded_csvfile_data(request.FILES['file'], post.pk)
             return redirect('list')
     else:
         form = UploadFileForm()

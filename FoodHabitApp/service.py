@@ -118,38 +118,9 @@ class Service:
         else:
             print(f"想定外の食品名です：{row['食品名']}")
 
-    def handle_uploaded_file(self, uploaded_file, upload_dir, post_pk):
-        """アップロードされたファイルのハンドル"""
+    def register_uploaded_csvfile_data(self, uploaded_file, post_pk):
+        """アップロードされたcsvのデータをDBに登録する"""
         food_habit_df = pd.read_csv(uploaded_file)
-        # 食事の欠損値を最頻値で補完
-        food_habit_df["食品名"].fillna(food_habit_df["食品名"].mode()[0], inplace=True)
-        # 体重の欠損値を平均値で補完
-        food_habit_df["体重"].fillna(food_habit_df["体重"].mean(), inplace=True)
-        # 食品名から食品のカテゴリを割り当てる
-        food_habit_df['食品のカテゴリ'] = food_habit_df.apply(self._assign_food_category, axis=1)
-        # DB登録
-        post_pk_list = [post_pk] * len(food_habit_df)
-        food_habit_instances = [FoodHabitModel(
-            date=date,
-            weight=weight,
-            food_name=food_name,
-            food_category=food_category,
-            post_id=post_id
-        ) for date, weight, food_name, food_category, post_id
-            in zip(food_habit_df['日付'], food_habit_df['体重'],
-                   food_habit_df['食品名'], food_habit_df['食品のカテゴリ'], post_pk_list)]
-        FoodHabitModel.objects.bulk_create(food_habit_instances)
-        # csv_filepath = os.path.join(upload_dir, uploaded_file.name)
-        # with open(csv_filepath, 'wb+') as destination:
-        #     for chunk in uploaded_file.chunks():
-        #         destination.write(chunk)
-        # self._register_data(csv_filepath, post_pk)
-        # # アップロードしたファイルを削除
-        # os.remove(csv_filepath)
-
-    def _register_data(self, csv_filepath, post_pk):
-        """csvのデータをDBに登録する"""
-        food_habit_df = pd.read_csv(csv_filepath)
         # 食事の欠損値を最頻値で補完
         food_habit_df["食品名"].fillna(food_habit_df["食品名"].mode()[0], inplace=True)
         # 体重の欠損値を平均値で補完
