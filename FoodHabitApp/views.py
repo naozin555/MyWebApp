@@ -37,7 +37,7 @@ def log_in_func(request):
             login(request, user)
             return redirect('list')
         else:
-            return redirect('login', {'error': 'ログインできませんでした'})
+            return redirect('login')
     return render(request, 'login.html')
 
 
@@ -112,4 +112,3 @@ def delete_func(request, pk):
     # 削除する記事に紐づく食習慣データの削除
     FoodHabitModel.objects.filter(post_id=pk).delete()
     return redirect('list')
-
