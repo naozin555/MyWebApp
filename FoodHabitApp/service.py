@@ -1,5 +1,4 @@
 import io
-import os
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -35,6 +34,7 @@ class Service:
     @staticmethod
     def visualize_food_habit(post_pk):
         """グラフの描画"""
+        plt.rcParams['font.family'] = 'IPAexGothic'
         # グラフを表示する領域の確保
         fig = plt.figure(facecolor='lightcyan', tight_layout=True)
 
@@ -50,11 +50,11 @@ class Service:
 
         # 体重推移の描画
         weight_graph.plot(date_list, weight_list)
-        weight_graph.set_ylabel("Weight[kg]")
-        weight_graph.set_xlabel("Date")
+        weight_graph.set_ylabel("体重[kg]")
+        weight_graph.set_xlabel("日付")
         weight_graph.set_ylim(50, 70)
         weight_graph.tick_params(axis='x', rotation=45)
-        weight_graph.set_title("Weight fluctuation")
+        weight_graph.set_title("体重推移")
 
         # 食事のカテゴリの割合の描画
         food_category_num_list = [
@@ -62,15 +62,15 @@ class Service:
             food_category_list.count('赤'),
             food_category_list.count('緑')
         ]
-        food_category_label = ["yellow: become your energy",
-                               "red: become your blood and flesh",
-                               "green: maintain bodily functions"]
+        food_category_label = ["黄: エネルギーのもとになる食品",
+                               "赤: 体をつくるもとになる食品",
+                               "緑: 体の調子を整える食品"]
         colorlist = ["gold", "orangered", "lawngreen"]
         food_category_graph.pie(food_category_num_list, autopct="%1.1f%%", colors=colorlist,
                                 wedgeprops={'linewidth': 1, 'edgecolor': "black"}, radius=1.5)
         food_category_graph.legend(food_category_label, fancybox=True, loc='upper center', bbox_to_anchor=(.5, -.2),
                                    borderaxespad=0, fontsize=10)
-        food_category_graph.set_title("Food category balance", y=1.24)
+        food_category_graph.set_title("食事のバランス", y=1.22)
 
     @staticmethod
     def plt_to_svg():

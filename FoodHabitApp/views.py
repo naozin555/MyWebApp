@@ -18,10 +18,12 @@ def sign_up_func(request):
     if request.method == 'POST':
         new_username = request.POST['username']
         new_password = request.POST['password']
+
+        # noinspection PyBroadException
         try:
             User.objects.get(username=new_username)
             return render(request, 'signup.html', {'error': 'このユーザーは既に登録されています。'})
-        except:
+        except Exception:
             user = User.objects.create_user(new_username, '', new_password)
             return redirect('login')
     return render(request, 'signup.html')
