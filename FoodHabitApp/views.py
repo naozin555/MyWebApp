@@ -39,7 +39,7 @@ def log_in_func(request):
             login(request, user)
             return redirect('list')
         else:
-            return redirect('login')
+            return render(request, 'login.html', {'error': 'ユーザー名かパスワードが違います。'})
     return render(request, 'login.html')
 
 
