@@ -55,7 +55,9 @@ class Service:
         weight_graph.plot(date_list, weight_list)
         weight_graph.set_ylabel("体重[kg]", fontproperties=fp)
         weight_graph.set_xlabel("日付", fontproperties=fp)
-        weight_graph.set_ylim(50, 70)
+        weight_graph.set_ylim(min(weight_list) - (max(weight_list) - min(weight_list)),
+                              max(weight_list) + (max(weight_list) - min(weight_list))
+                              )
         weight_graph.tick_params(axis='x', rotation=45)
         weight_graph.set_title("体重推移", fontproperties=fp)
 
