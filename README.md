@@ -8,7 +8,8 @@
 
 # 特徴
 
-食事のバランスを解析して、アドバイスをしてくれます。
+- 食事のバランスを解析して、アドバイスをしてくれます。
+- 体重の記録漏れがあっても最頻値で補完してくれます。
 
 # 使い方
 
@@ -23,33 +24,3 @@
 
 * 作成者：原田直明
 * E-mail：naozin555@gmail.com
-
-## ローカルで動かす場合に必要なパッケージ等
-### Requirement
-
-asgiref==3.2.10  
-certifi==2020.6.20  
-cycler==0.10.0  
-dj-database-url==0.5.0  
-Django==3.1  
-django-heroku==0.3.1  
-gunicorn==20.0.4  
-isort==5.6.3  
-kiwisolver==1.2.0  
-matplotlib==3.3.2  
-numpy==1.19.2  
-opencv-python==4.4.0.44  
-pandas==1.1.3  
-Pillow==7.2.0  
-psycopg2-binary==2.8.6  
-pyparsing==2.4.7  
-python-dateutil==2.8.1  
-pytz==2020.1  
-six==1.15.0  
-sqlparse==0.3.1  
-whitenoise==5.2.0  
-
-### Installation
-
-pip install -r requirements.txt
-
