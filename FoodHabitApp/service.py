@@ -124,9 +124,9 @@ class Service:
         else:
             print(f"想定外の食品名です：{row['食品名']}")
 
-    def register_uploaded_csvfile_data(self, uploaded_file, post_pk):
+    def register_uploaded_file_data(self, uploaded_file, post_pk):
         """アップロードされたcsvのデータをDBに登録する"""
-        food_habit_df = pd.read_csv(uploaded_file)
+        food_habit_df = pd.read_excel(uploaded_file, sheet_name='食習慣データ')
         # 食事の欠損値を最頻値で補完
         food_habit_df["食品名"].fillna(food_habit_df["食品名"].mode()[0], inplace=True)
         # 体重の欠損値を平均値で補完

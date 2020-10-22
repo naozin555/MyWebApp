@@ -55,13 +55,11 @@ def create_post_func(request):
         post = Board.objects.create(author=request.user.get_username())
         post.save()
         form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            service.register_uploaded_csvfile_data(request.FILES['file'], post.pk)
-            return redirect('list')
+        service.register_uploaded_file_data(request.FILES['file'], post.pk)
+        return redirect('list')
     else:
         form = UploadFileForm()
         return render(request, 'create.html', {'form': form})
-    return render(request, 'create.html', {'form': form})
 
 
 # 記事一覧
